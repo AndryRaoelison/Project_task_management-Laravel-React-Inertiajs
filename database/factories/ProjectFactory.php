@@ -27,7 +27,7 @@ class ProjectFactory extends Factory
             "created_by" => User::factory(),
             "updated_by" => 1,
             "created_at" => time(),
-            "updated_at" => time()
+            "updated_at" => time(),
 
         ];
     }
