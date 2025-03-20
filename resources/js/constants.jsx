@@ -14,9 +14,9 @@ export const TASK_STATUS_CLASS_MAP = {
   finished: "bg-green-500",
 };
 export const TASK_STATUS_TEXT_MAP = {
-  pending: "Pending",
-  in_progress: "In Progress",
-  finished: "finished",
+  pending: "En attente",
+  in_progress: "En cours",
+  finished: "Terminé",
 };
 export const TASK_PRIORITY_CLASS_MAP = {
   low: "bg-gray-600",
@@ -28,3 +28,20 @@ export const TASK_PRIORITY_TEXT_MAP = {
   medium: "Medium",
   high: "High",
 };
+
+export const chevron_up = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="size-6"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="m4.5 15.75 7.5-7.5 7.5 7.5"
+    />
+  </svg>
+);

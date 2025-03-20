@@ -5,11 +5,12 @@ import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
+import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import TableHeading from "@/Components/TableHeading";
 
-const Index = ({ projects, queryParams = null }) => {
-  // Function for selecting a status and searching a project name
+const Index = ({ tasks, queryParams = null }) => {
+  // Function for selecting a status and searching a task name
+
   const searchfield = (name, value) => {
     const newQueryParams = { ...(queryParams || {}) };
     if (value) {
@@ -17,7 +18,10 @@ const Index = ({ projects, queryParams = null }) => {
     } else {
       delete newQueryParams[name];
     }
-    router.get(route("project.index", newQueryParams));
+    router.get(route("task.index", newQueryParams), {
+      preserveState: true,
+      replace: true,
+    });
   };
 
   const keypress = (name, e) => {
@@ -36,7 +40,7 @@ const Index = ({ projects, queryParams = null }) => {
       newQueryParams.sort_direction = "asc";
     }
 
-    router.get(route("project.index", newQueryParams), {
+    router.get(route("task.index", newQueryParams), {
       replace: true,
       preserveState: true,
     });
@@ -45,11 +49,11 @@ const Index = ({ projects, queryParams = null }) => {
     <AuthenticatedLayout
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Projets
+          Tâches
         </h2>
       }
     >
-      <Head title="Projects" />
+      <Head title="Tasks" />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 ">
@@ -125,7 +129,7 @@ const Index = ({ projects, queryParams = null }) => {
                       onChange={(e) => searchfield("status", e.target.value)}
                     >
                       <option className="" value=" "></option>
-                      {Object.entries(PROJECT_STATUS_TEXT_MAP).map(
+                      {Object.entries(TASK_STATUS_TEXT_MAP).map(
                         ([key, value]) => {
                           return (
                             <option key={key} className=" " value={key}>
@@ -151,47 +155,52 @@ const Index = ({ projects, queryParams = null }) => {
                 </tr>
               </thead>
               <tbody className="text-sm text-nowrap">
-                {projects.data.map((project) => {
+                {tasks.data.map((task) => {
                   return (
                     <tr
-                      key={project.id}
+                      key={task.id}
                       className="border-b-2 border-gray-500 px-20  "
                     >
-                      <td className="px-3 py-2">{project.id}</td>
-                      <td className="px-3 py-2 text-wrap">{project.name}</td>
+                      <td className="px-3 py-2">{task.id}</td>
+                      <td className="px-3 py-2 text-wrap">{task.name}</td>
                       <td className="px-3 py-4 ">
                         <span
                           className={
                             "text-white px-3 py-2 rounded-md inline-block w-full text-center " +
-                            PROJECT_STATUS_CLASS_MAP[project.status]
+                            TASK_STATUS_CLASS_MAP[task.status]
                           }
                         >
-                          {PROJECT_STATUS_TEXT_MAP[project.status]}{" "}
+                          {TASK_STATUS_TEXT_MAP[task.status]}{" "}
                         </span>
                       </td>
-                      <td className="px-3 py-2 ">{project.created_by.name}</td>
-                      <td className="px-3 py-2">{project.start_date}</td>
-                      <td className="px-3 py-2">{project.due_date}</td>
-                      <td className="flex gap-2 items-center w-fit justify-center text-left py-2">
-                        <Link
-                          className="text-blue-600 hover:text-blue-300 mx-1"
-                          href={route("project.edit", project.id)}
-                        >
-                          Editer
-                        </Link>
-                        <Link
-                          className="text-red-600 hover:text-red-300 mx-1"
-                          href={route("project.destroy", project.id)}
-                        >
-                          Supprimer
-                        </Link>
+                      <td className="px-3 py-2 ">{task.created_by.name}</td>
+                      <td className="px-3 py-2">{task.start_date}</td>
+                      <td className="px-3 py-2">{task.due_date}</td>
+                      <td className="  w-fit px-3 text-center">
+                        <div className="flex gap-2 items-center justify-center">
+                          <Link
+                            className="text-blue-600 hover:text-blue-300 mx-1 h-full "
+                            href={route("task.edit", task.id)}
+                          >
+                            Editer
+                          </Link>
+                          <span className="text-gray-700 font-semibold text-mg">
+                            |
+                          </span>
+                          <Link
+                            className="text-red-600 hover:text-red-300 mx-1 "
+                            href={route("task.destroy", task.id)}
+                          >
+                            Supprimer
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   );
                 })}
               </tbody>
             </table>
-            <Pagination links={projects.meta.links} />
+            <Pagination links={tasks.meta.links} />
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ const Pagination = ({ links }) => {
     <nav className="text-center m-2 p-1 text-gray-400">
       {links.map((link) => (
         <Link
+          key={link.label}
           href={link.url}
           className={
             "px-2 mx-2 py-1 inline-block text-xs rounded-md " +

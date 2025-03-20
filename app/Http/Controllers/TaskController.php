@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -13,7 +15,31 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $query = Task::query()->with([
+            "taskCreatedBy",
+            "taskUpdatedBy",
+            "taskBelongsProject",
+            "taskAssignedUser"
+        ]);
+        if (request('status')) {
+            $query->where('status', 'like', "%" . request('status') . "%");
+        }
+        if (request('name')) {
+            $query->where('name', 'like', "%" . request('name') . "%");
+        }
+        if (request('created_by')) {
+            $query->whereHas('taskCreatedBy', function ($q) {
+                $q->where('name', 'like', "%" . request('created_by') . "%");
+            });
+        }
+        $sort_field = request('sort_field', 'created_at');
+        $sort_direction = request('sort_direction', 'desc');
+        $tasks = $query->orderBy($sort_field, $sort_direction)
+            ->paginate(25)->onEachSide(1);
+        return Inertia::render('Tasks/Index', [
+            'tasks' => TaskResource::collection($tasks),
+            'queryParams' => request()->query() ?: null
+        ]);
     }
 
     /**

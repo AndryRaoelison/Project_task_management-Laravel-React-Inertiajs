@@ -34,7 +34,13 @@ export default function AuthenticatedLayout({ header, children }) {
                   href={route("project.index")}
                   active={route().current("project.index")}
                 >
-                  Projet
+                  Projets
+                </NavLink>
+                <NavLink
+                  href={route("task.index")}
+                  active={route().current("task.index")}
+                >
+                  Tâches
                 </NavLink>
               </div>
             </div>

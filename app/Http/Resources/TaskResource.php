@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,20 @@ class TaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+            "status" => $this->status,
+            "priority" => $this->priority,
+            "due_date" => (new Carbon($this->due_date))->format("d-m-Y"),
+            "start_date" => (new Carbon($this->start_date))->format("d-m-Y"),
+            "created_by" => (new UserResource($this->taskCreatedBy)),
+            "updated_by" => new UserResource($this->taskUpdatedBy),
+            "assigned_user_id" => new UserResource($this->taskAssignedUser),
+            "project_id" => new ProjectResource($this->taskBelongsProject),
+            "created_at" => (new Carbon($this->created_at))->format("d-m-y"),
+            "updated_at" => (new Carbon($this->updated_at))->format("d-m-y"),
+        ];
     }
 }
