@@ -26,7 +26,7 @@ class TaskResource extends JsonResource
             "created_by" => (new UserResource($this->taskCreatedBy)),
             "updated_by" => new UserResource($this->taskUpdatedBy),
             "assigned_user_id" => new UserResource($this->taskAssignedUser),
-            "project_id" => new ProjectResource($this->taskBelongsProject),
+            "project" => new ProjectResource($this->project),
             "created_at" => (new Carbon($this->created_at))->format("d-m-y"),
             "updated_at" => (new Carbon($this->updated_at))->format("d-m-y"),
         ];

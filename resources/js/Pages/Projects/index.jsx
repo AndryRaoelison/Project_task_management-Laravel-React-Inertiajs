@@ -50,7 +50,7 @@ const Index = ({ projects, queryParams = null }) => {
       }
     >
       <Head title="Projects" />
-
+      {console.log("queryparam in project index : " + queryParams)}
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 ">
           <div className="overflow-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
@@ -124,7 +124,7 @@ const Index = ({ projects, queryParams = null }) => {
                       className={"w-fit"}
                       onChange={(e) => searchfield("status", e.target.value)}
                     >
-                      <option className="" value=" "></option>
+                      <option className="" value=""></option>
                       {Object.entries(PROJECT_STATUS_TEXT_MAP).map(
                         ([key, value]) => {
                           return (
@@ -158,7 +158,11 @@ const Index = ({ projects, queryParams = null }) => {
                       className="border-b-2 border-gray-500 px-20  "
                     >
                       <td className="px-3 py-2">{project.id}</td>
-                      <td className="px-3 py-2 text-wrap">{project.name}</td>
+                      <td className="px-3 py-2 text-wrap hover:!text-white">
+                        <Link href={route("project.show", { id: project.id })}>
+                          {project.name}
+                        </Link>
+                      </td>
                       <td className="px-3 py-4 ">
                         <span
                           className={

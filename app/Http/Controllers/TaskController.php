@@ -18,7 +18,7 @@ class TaskController extends Controller
         $query = Task::query()->with([
             "taskCreatedBy",
             "taskUpdatedBy",
-            "taskBelongsProject",
+            "project",
             "taskAssignedUser"
         ]);
         if (request('status')) {

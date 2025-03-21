@@ -17,10 +17,10 @@ const TableHeading = ({
           ? () => {
               sortChanged(name);
             }
-          : undefined
+          : null
       }
       className={
-        "px-3 py-0 " + (filterbool && "cursor-pointer ") + "gap-1" + className
+        "px-3 py-0 " + (filterbool && "cursor-pointer ") + "gap-1 " + className
       }
     >
       <div className="flex items-center">
