@@ -197,7 +197,7 @@ const Index = ({ projects, queryParams = null }) => {
                 })}
               </tbody>
             </table>
-            <Pagination links={projects.meta.links} queryParams={queryParams} />
+            <Pagination links={projects.meta.links} />
           </div>
         </div>
       </div>
