@@ -48,7 +48,6 @@ const Show = ({ project, tasks, queryParams = null }) => {
     }
 
     const url = route("project.show", {
-      project: project, //this is the solution of the problem
       ...newQueryParams,
     });
     console.log("URL générée :", url);
@@ -71,7 +70,7 @@ const Show = ({ project, tasks, queryParams = null }) => {
       {/* -------Project detail-------- */}
       <div className="text-white">{JSON.stringify(project, null, 2)}</div>
       <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 ">
+        <div className="mx-auto max-w-[1700px] sm:px-6 ">
           <div className="overflow-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <h3 className="dark:text-white text-gray-800 text-xl px-2 mb-2 ">
               Détails du projet
@@ -136,7 +135,7 @@ const Show = ({ project, tasks, queryParams = null }) => {
       </div>
       {/* -------Task related project detail-------- */}
       <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 ">
+        <div className="mx-auto max-w-[1700px] sm:px-6 ">
           <div className="overflow-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <h3 className="dark:text-white text-gray-800 text-xl px-2 mb-2 ">
               Tâches du projet

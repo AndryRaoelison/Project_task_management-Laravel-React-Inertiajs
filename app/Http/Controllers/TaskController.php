@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskResource;
+use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
@@ -24,12 +25,17 @@ class TaskController extends Controller
         if (request('status')) {
             $query->where('status', 'like', "%" . request('status') . "%");
         }
-        if (request('name')) {
-            $query->where('name', 'like', "%" . request('name') . "%");
+        if (request('TaskNameInTask')) {
+            $query->where('name', 'like', "%" . request('TaskNameInTask') . "%");
         }
         if (request('created_by')) {
             $query->whereHas('taskCreatedBy', function ($q) {
                 $q->where('name', 'like', "%" . request('created_by') . "%");
+            });
+        }
+        if (request("ProjectNameInTask")) {
+            $query->whereHas('project', function ($q) {
+                $q->where('name', 'like', '%' . request('ProjectNameInTask') . '%');
             });
         }
         $sort_field = request('sort_field', 'created_at');

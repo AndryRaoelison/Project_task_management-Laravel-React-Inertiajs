@@ -30,7 +30,6 @@ const Index = ({ tasks, queryParams = null }) => {
   // Function for sorting by column :
   const sortChanged = (name) => {
     const newQueryParams = { ...(queryParams || {}) };
-
     if (newQueryParams.sort_field === name) {
       newQueryParams.sort_direction =
         newQueryParams.sort_direction === "asc" ? "desc" : "asc";
@@ -54,8 +53,8 @@ const Index = ({ tasks, queryParams = null }) => {
     >
       <Head title="Tasks" />
 
-      <div className="py-12 w-full border-2 border-pink-400">
-        <div className="mx-auto w-fit sm:px-6 ">
+      <div className="py-12 w-full ">
+        <div className="mx-auto max-w-[1700px] sm:px-6 ">
           <div className="overflow-auto w-full bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <TableTasks
               tasks={tasks}

@@ -1,6 +1,6 @@
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
-const Pagination = ({ links }) => {
+const Pagination = ({ links, queryParams }) => {
   return (
     <nav className="text-center m-2 p-1 text-gray-400">
       {links.map((link) => (

@@ -32,6 +32,7 @@ class ProjectController extends Controller
         }
 
         $projects = $query->orderBy($sort_field, $sort_direction)->paginate(20)->onEachSide(1);
+
         return inertia('Projects/Index', [
             "projects" => ProjectResource::collection($projects),
             "queryParams" => request()->query() ?: null,
@@ -85,7 +86,7 @@ class ProjectController extends Controller
         return inertia('Projects/Show', [
             "project" => new ProjectResource($project),
             "tasks" => TaskResource::collection($tasks),
-            "queryParams" => $queryParams,
+            "queryParams" => $queryParams ?: null,
         ]);
     }
 

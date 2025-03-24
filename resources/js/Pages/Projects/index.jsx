@@ -17,7 +17,10 @@ const Index = ({ projects, queryParams = null }) => {
     } else {
       delete newQueryParams[name];
     }
-    router.get(route("project.index", newQueryParams));
+    router.get(route("project.index", newQueryParams), {
+      preserveState: true,
+      replace: true,
+    });
   };
 
   const keypress = (name, e) => {
@@ -50,9 +53,8 @@ const Index = ({ projects, queryParams = null }) => {
       }
     >
       <Head title="Projects" />
-      {console.log("queryparam in project index : " + queryParams)}
       <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 ">
+        <div className="mx-auto max-w-[1700px] sm:px-6 ">
           <div className="overflow-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
               <thead
@@ -82,7 +84,7 @@ const Index = ({ projects, queryParams = null }) => {
                     sortChanged={sortChanged}
                     sort_direction={queryParams?.sort_direction}
                     filterbool={true}
-                    name={"name"}
+                    name={"start_date"}
                   >
                     Date de <br />
                     lancement
@@ -91,7 +93,7 @@ const Index = ({ projects, queryParams = null }) => {
                     sortChanged={sortChanged}
                     sort_direction={queryParams?.sort_direction}
                     filterbool={true}
-                    name={"name"}
+                    name={"due_date"}
                   >
                     Date de <br /> finalisation
                   </TableHeading>
@@ -195,7 +197,7 @@ const Index = ({ projects, queryParams = null }) => {
                 })}
               </tbody>
             </table>
-            <Pagination links={projects.meta.links} />
+            <Pagination links={projects.meta.links} queryParams={queryParams} />
           </div>
         </div>
       </div>
