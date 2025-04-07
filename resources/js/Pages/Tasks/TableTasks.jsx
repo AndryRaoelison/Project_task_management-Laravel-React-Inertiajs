@@ -86,7 +86,7 @@ const TableTasks = ({
             <th className="px-3 py-2">
               <TextInput
                 defaultValue={queryParams ? queryParams.TaskNameInTask : ""}
-                className="w-90%"
+                className="w-[75%]"
                 placeholder="Taches..."
                 onBlur={(e) => searchfield("TaskNameInTask", e.target.value)}
                 onKeyPress={(e) => keypress("TaskNameInTask", e)}
@@ -120,7 +120,7 @@ const TableTasks = ({
             <th className="px-3 py-2">
               <TextInput
                 defaultValue={queryParams ? queryParams.created_by : ""}
-                className="w-90%"
+                className="w-[90%]"
                 placeholder="Chef de projet..."
                 onBlur={(e) => searchfield("created_by", e.target.value)}
                 onKeyPress={(e) => keypress("created_by", e)}

@@ -18,7 +18,6 @@ const Show = ({ project, tasks, queryParams = null }) => {
     router.get(
       route("project.show", {
         project: project,
-
         ...newQueryParams,
       }),
       {
@@ -46,11 +45,6 @@ const Show = ({ project, tasks, queryParams = null }) => {
       newQueryParams.sort_field = name;
       newQueryParams.sort_direction = "asc";
     }
-
-    const url = route("project.show", {
-      ...newQueryParams,
-    });
-    console.log("URL générée :", url);
 
     router.get(url, {
       preserveState: true,

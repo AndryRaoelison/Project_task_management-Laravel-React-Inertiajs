@@ -8,7 +8,7 @@ import SelectInput from "@/Components/SelectInput";
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
 import TableHeading from "@/Components/TableHeading";
 
-const Index = ({ projects, queryParams = null }) => {
+const Index = ({ projects, queryParams = null, success = null }) => {
   // Function for selecting a status and searching a project name
   const searchfield = (name, value) => {
     const newQueryParams = { ...(queryParams || {}) };
@@ -47,14 +47,29 @@ const Index = ({ projects, queryParams = null }) => {
   return (
     <AuthenticatedLayout
       header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Projets
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            Projets
+          </h2>
+          <Link
+            className=" text-gray-900 py-2 px-3  bg-indigo-700 hover:bg-indigo-600 transition-all rounded-md dark:text-gray-100"
+            href={route("project.create")}
+          >
+            Nouveau projet
+          </Link>
+        </div>
       }
     >
       <Head title="Projects" />
       <div className="py-12">
         <div className="mx-auto max-w-[1700px] sm:px-6 ">
+          {success && (
+            <div className="flex w-full justify-end  ">
+              <h5 className="bg-green-800   dark:text-white w-fit py-3  px-40 mb-4 rounded-sm   text-black  ">
+                {success}
+              </h5>
+            </div>
+          )}
           <div className="overflow-auto bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
               <thead
@@ -102,10 +117,10 @@ const Index = ({ projects, queryParams = null }) => {
                 {/* Filtering section */}
                 <tr className="text-nowrap ">
                   <th className="px-3 py-2"></th>
-                  <th className="px-3 py-2">
+                  <th className="px-3 py-2 ">
                     <TextInput
                       defaultValue={queryParams ? queryParams.name : ""}
-                      className="w-90%"
+                      className="w-3/4"
                       placeholder="Projet..."
                       onBlur={(e) => searchfield("name", e.target.value)}
                       onKeyPress={(e) => keypress("name", e)}
@@ -138,11 +153,11 @@ const Index = ({ projects, queryParams = null }) => {
                       )}
                     </SelectInput>
                   </th>
-                  <th className="px-3 py-2">
+                  <th className="px-3 py-2   ">
                     <TextInput
                       defaultValue={queryParams ? queryParams.created_by : ""}
-                      className="w-90%"
                       placeholder="Chef de projet..."
+                      className={"w-3/4"}
                       onBlur={(e) => searchfield("created_by", e.target.value)}
                       onKeyPress={(e) => keypress("created_by", e)}
                     />
