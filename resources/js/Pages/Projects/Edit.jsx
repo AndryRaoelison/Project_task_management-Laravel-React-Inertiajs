@@ -7,17 +7,19 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-const Create = () => {
+const Edit = ({ project }) => {
   const { data, setData, post, errors } = useForm({
-    name: "",
-    status: "pending",
-    description: "",
-    due_date: "",
-    start_date: "",
+    name: project.name || "",
+    status: project.status || "",
+    description: project.description || "",
+    due_date: project.due_date || "",
+    start_date: project.start_date || "",
+    _method: "PUT",
   });
+
   const onSubmit = (e) => {
     e.preventDefault();
-    post(route("project.store"));
+    post(route("project.update", project));
   };
   return (
     <AuthenticatedLayout
@@ -60,7 +62,7 @@ const Create = () => {
                     type="submit"
                     className="text-gray-900 py-2 px-7 ml-5 h-10 bg-indigo-700 hover:bg-indigo-600 transition-all rounded-md dark:text-gray-100"
                   >
-                    Creer
+                    Modifier
                   </button>
                 </div>
               </div>
@@ -128,4 +130,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Edit;

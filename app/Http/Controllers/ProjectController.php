@@ -101,7 +101,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return Inertia::render("Projects/Edit", [
+            "project" => new ProjectResource($project)
+        ]);
     }
 
     /**
@@ -109,7 +111,11 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $name = $project->name;
+        $project_id = $project->id;
+        $project->update($request->validated());
+        return to_route("project.index")->with("success", "Le projet :  \"$project_id-$name\" a bien été modifié");
+
     }
 
     /**
@@ -117,6 +123,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $name = $project->name;
+        $project_id = $project->id;
+        $project->delete();
+        return to_route("project.index")->with("success", "Le projet :  \"$project_id-$name\" a bien été supprimé");
     }
 }

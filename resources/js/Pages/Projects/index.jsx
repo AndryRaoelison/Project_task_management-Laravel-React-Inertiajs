@@ -44,6 +44,16 @@ const Index = ({ projects, queryParams = null, success = null }) => {
       preserveState: true,
     });
   };
+  const deleteproject = (project) => {
+    if (
+      !window.confirm(
+        "Souhaitez-vous effacer le projet : " + '"' + project.name + '"'
+      )
+    ) {
+      return;
+    }
+    router.delete(route("project.destroy", project));
+  };
   return (
     <AuthenticatedLayout
       header={
@@ -191,21 +201,29 @@ const Index = ({ projects, queryParams = null, success = null }) => {
                         </span>
                       </td>
                       <td className="px-3 py-2 ">{project.created_by.name}</td>
-                      <td className="px-3 py-2">{project.start_date}</td>
-                      <td className="px-3 py-2">{project.due_date}</td>
-                      <td className="flex gap-2 items-center w-fit justify-center text-left py-2">
-                        <Link
-                          className="text-blue-600 hover:text-blue-300 mx-1"
-                          href={route("project.edit", project.id)}
-                        >
-                          Editer
-                        </Link>
-                        <Link
-                          className="text-red-600 hover:text-red-300 mx-1"
-                          href={route("project.destroy", project.id)}
-                        >
-                          Supprimer
-                        </Link>
+                      <td className="px-3 py-2">
+                        {new Date(project.start_date).toLocaleDateString(
+                          "fr-FR"
+                        )}
+                      </td>
+                      <td className="px-3 py-2">
+                        {new Date(project.due_date).toLocaleDateString("fr-FR")}
+                      </td>
+                      <td className="w-fit px-3 text-center">
+                        <div className="flex gap-2 items-center justify-center">
+                          <Link
+                            className="text-blue-600 hover:text-blue-300 mx-1"
+                            href={route("project.edit", project)}
+                          >
+                            Editer
+                          </Link>
+                          <button
+                            className="text-red-600 hover:text-red-300 mx-1"
+                            onClick={() => deleteproject(project)}
+                          >
+                            Supprimer
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
