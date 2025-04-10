@@ -16,7 +16,7 @@ Route::middleware('auth')->group(function () {
         ->name('dashboard');
     Route::resource('project', ProjectController::class);
     Route::resource('task', TaskController::class);
-    Route::resource('user', UserController::class);
+    Route::resource('user', UserController::class)->except('show');
 });
 
 

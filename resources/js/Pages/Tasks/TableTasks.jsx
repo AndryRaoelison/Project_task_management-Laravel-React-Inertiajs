@@ -142,7 +142,6 @@ const TableTasks = ({
                   </td>
                 )}
                 <td className="px-3 py-2 w-[50%]  text-wrap ">{task.name}</td>
-
                 <td className="px-3 py-4 ">
                   <span
                     className={

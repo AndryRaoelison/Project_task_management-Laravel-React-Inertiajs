@@ -11,10 +11,10 @@ const TableHeading = ({
   filterbool ??= false;
   sortChanged ??= null;
   return (
-    <th className={"px-3 py-0 " + +"gap-1 " + className}>
+    <th className={"px-3 py-0 " + "gap-1 " + className}>
       <div
         className={
-          "flex items-center w-fit " + (filterbool && "cursor-pointer ")
+          "flex items-center w-fit gap-2 " + (filterbool && "cursor-pointer ")
         }
         onClick={
           filterbool

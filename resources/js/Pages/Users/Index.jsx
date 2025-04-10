@@ -4,12 +4,10 @@ import React from "react";
 import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextInput from "@/Components/TextInput";
-import SelectInput from "@/Components/SelectInput";
-import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constants";
 import TableHeading from "@/Components/TableHeading";
 
-const Index = ({ projects, queryParams = null, success = null }) => {
-  // Function for selecting a status and searching a project name
+const Index = ({ users, queryParams = null, success = null }) => {
+  // Function for selecting a status and searching a user name
   const searchfield = (name, value) => {
     const newQueryParams = { ...(queryParams || {}) };
     if (value) {
@@ -17,7 +15,7 @@ const Index = ({ projects, queryParams = null, success = null }) => {
     } else {
       delete newQueryParams[name];
     }
-    router.get(route("project.index", newQueryParams), {
+    router.get(route("user.index", newQueryParams), {
       preserveState: true,
       replace: true,
     });
@@ -30,7 +28,6 @@ const Index = ({ projects, queryParams = null, success = null }) => {
   // Function for sorting by column :
   const sortChanged = (name) => {
     const newQueryParams = { ...(queryParams || {}) };
-
     if (newQueryParams.sort_field === name) {
       newQueryParams.sort_direction =
         newQueryParams.sort_direction === "asc" ? "desc" : "asc";
@@ -38,45 +35,44 @@ const Index = ({ projects, queryParams = null, success = null }) => {
       newQueryParams.sort_field = name;
       newQueryParams.sort_direction = "asc";
     }
-
-    router.get(route("project.index", newQueryParams), {
+    router.get(route("user.index", newQueryParams), {
       replace: true,
       preserveState: true,
     });
   };
   // Function handling the button delete :
-  const deleteproject = (project) => {
+  const deleteUser = (user) => {
     if (
       !window.confirm(
-        "Souhaitez-vous effacer le projet : " + '"' + project.name + '"'
+        "Souhaitez-vous effacer l'utilsateur : " + '"' + user.name + '"'
       )
     ) {
       return;
     }
-    router.delete(route("project.destroy", project));
+    router.delete(route("user.destroy", user));
   };
   return (
     <AuthenticatedLayout
       header={
         <div className="flex justify-between">
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            Projets
+            Utilisateurs
           </h2>
           <Link
             className=" text-gray-900 py-2 px-3  bg-indigo-700 hover:bg-indigo-600 transition-all rounded-md dark:text-gray-100"
-            href={route("project.create")}
+            href={route("user.create")}
           >
-            Créer un nouveau projet
+            Ajouter un utilisateur
           </Link>
         </div>
       }
     >
-      <Head title="Projects" />
+      <Head title="users" />
       <div className="py-12">
         <div className="mx-auto max-w-[1700px] sm:px-6 ">
           {success && (
             <div className="flex w-full justify-end  ">
-              <h5 className="bg-green-800   dark:text-white w-fit py-3  px-40 mb-4 rounded-lg   text-black  ">
+              <h5 className="bg-green-800   dark:text-white w-fit py-3  px-40 mb-4 rounded-sm   text-black  ">
                 {success}
               </h5>
             </div>
@@ -102,28 +98,23 @@ const Index = ({ projects, queryParams = null, success = null }) => {
                     filterbool={true}
                     name={"name"}
                   >
-                    Projet
+                    Nom
                   </TableHeading>
-                  <TableHeading>Status</TableHeading>
-                  <TableHeading className="px-3 py-2">Creer par</TableHeading>
+                  <TableHeading>Email</TableHeading>
+                  <TableHeading className="px-3 py-2"></TableHeading>
                   <TableHeading
                     sortChanged={sortChanged}
                     sort_direction={queryParams?.sort_direction}
                     filterbool={true}
-                    name={"start_date"}
+                    name={"created_at"}
+                    className={"pt-2"}
                   >
-                    Date de <br />
-                    lancement
+                    Date d' <br />
+                    inscription
                   </TableHeading>
-                  <TableHeading
-                    sortChanged={sortChanged}
-                    sort_direction={queryParams?.sort_direction}
-                    filterbool={true}
-                    name={"due_date"}
-                  >
-                    Date de <br /> finalisation
+                  <TableHeading className="text-center  pt-4 flex justify-center">
+                    Actions
                   </TableHeading>
-                  <TableHeading className="text-center">Actions</TableHeading>
                 </tr>
                 {/* Filtering section */}
                 <tr className="text-nowrap ">
@@ -132,95 +123,54 @@ const Index = ({ projects, queryParams = null, success = null }) => {
                     <TextInput
                       defaultValue={queryParams ? queryParams.name : ""}
                       className="w-3/4"
-                      placeholder="Projet..."
+                      placeholder="Nom..."
                       onBlur={(e) => searchfield("name", e.target.value)}
                       onKeyPress={(e) => keypress("name", e)}
                     />
                   </th>
                   <th className="px-3 py-2 gap-0 overflow-visible">
-                    {queryParams?.status && (
-                      <button
-                        onClick={() => searchfield("status", null)}
-                        className="text-lg p-1.5 bg-gray-900 "
-                      >
-                        x
-                      </button>
-                    )}
-                    <SelectInput
-                      queryparams={queryParams}
-                      defaultValue={queryParams ? queryParams.status : ""}
-                      className={"w-fit"}
-                      onChange={(e) => searchfield("status", e.target.value)}
-                    >
-                      <option className="" value=""></option>
-                      {Object.entries(PROJECT_STATUS_TEXT_MAP).map(
-                        ([key, value]) => {
-                          return (
-                            <option key={key} className=" " value={key}>
-                              {value}
-                            </option>
-                          );
-                        }
-                      )}
-                    </SelectInput>
-                  </th>
-                  <th className="px-3 py-2   ">
                     <TextInput
                       defaultValue={queryParams ? queryParams.created_by : ""}
-                      placeholder="Chef de projet..."
+                      placeholder="utilisateur@email.com"
                       className={"w-3/4"}
-                      onBlur={(e) => searchfield("created_by", e.target.value)}
-                      onKeyPress={(e) => keypress("created_by", e)}
+                      onBlur={(e) => searchfield("email", e.target.value)}
+                      onKeyPress={(e) => keypress("email", e)}
                     />
                   </th>
+                  <th className="px-3 py-2   "></th>
                   <th className="px-3 py-2"></th>
                   <th className="px-3 py-2"></th>
-                  <th className="text-center"></th>
                 </tr>
               </thead>
               <tbody className="text-sm text-nowrap">
-                {projects.data.map((project) => {
+                {users.data.map((user) => {
                   return (
                     <tr
-                      key={project.id}
+                      key={user.id}
                       className="border-b-2 border-gray-500 px-20  "
                     >
-                      <td className="px-3 py-2">{project.id}</td>
+                      <td className="px-3 py-2">{user.id}</td>
                       <td className="px-3 py-2 text-wrap hover:!text-white">
-                        <Link href={route("project.show", { id: project.id })}>
-                          {project.name}
+                        <Link href={route("user.edit", { id: user.id })}>
+                          {user.name}
                         </Link>
                       </td>
-                      <td className="px-3 py-4 ">
-                        <span
-                          className={
-                            "text-white px-3 py-2 rounded-md inline-block w-full text-center " +
-                            PROJECT_STATUS_CLASS_MAP[project.status]
-                          }
-                        >
-                          {PROJECT_STATUS_TEXT_MAP[project.status]}{" "}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 ">{project.created_by.name}</td>
+                      <td className="px-3 py-4 ">{user.email}</td>
+                      <td className="px-3 py-2 "></td>
                       <td className="px-3 py-2">
-                        {new Date(project.start_date).toLocaleDateString(
-                          "fr-FR"
-                        )}
-                      </td>
-                      <td className="px-3 py-2">
-                        {new Date(project.due_date).toLocaleDateString("fr-FR")}
+                        {new Date(user.created_at).toLocaleDateString("fr-FR")}
                       </td>
                       <td className="w-fit px-3 text-center">
                         <div className="flex gap-2 items-center justify-center">
                           <Link
                             className="text-blue-600 hover:text-blue-300 mx-1"
-                            href={route("project.edit", project)}
+                            href={route("user.edit", user)}
                           >
                             Editer
                           </Link>
                           <button
                             className="text-red-600 hover:text-red-300 mx-1"
-                            onClick={() => deleteproject(project)}
+                            onClick={() => deleteUser(user)}
                           >
                             Supprimer
                           </button>
@@ -231,7 +181,7 @@ const Index = ({ projects, queryParams = null, success = null }) => {
                 })}
               </tbody>
             </table>
-            <Pagination links={projects.meta.links} />
+            <Pagination links={users.meta.links} />
           </div>
         </div>
       </div>
