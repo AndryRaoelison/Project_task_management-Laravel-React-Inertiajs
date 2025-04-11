@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
                 "required",
                 "email",
                 Rule::unique('users', 'email')
-                    ->ignore($this->user ?? $this->user->id)
+                    ->ignore(optional($this->user)->id)
             ],
             "password" => [
                 Password::min(8)->numbers()->mixedCase()->symbols(),

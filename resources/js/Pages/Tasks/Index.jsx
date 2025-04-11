@@ -1,10 +1,10 @@
-import { Head, router } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TableTasks from "./TableTasks";
 
-const Index = ({ tasks, queryParams = null }) => {
+const Index = ({ tasks, queryParams = null, success = null }) => {
   // Function for selecting a status and searching a task name
   const searchfield = (name, value) => {
     const newQueryParams = { ...(queryParams || {}) };
@@ -46,15 +46,30 @@ const Index = ({ tasks, queryParams = null }) => {
   return (
     <AuthenticatedLayout
       header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Tâches
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            Tâches
+          </h2>
+          <Link
+            className=" text-gray-900 py-2 px-3  bg-indigo-700 hover:bg-indigo-600 transition-all rounded-md dark:text-gray-100"
+            href={route("task.create")}
+          >
+            Créer une nouvelle tâche
+          </Link>
+        </div>
       }
     >
       <Head title="Tasks" />
 
       <div className="py-12 w-full ">
         <div className="mx-auto max-w-[1700px] sm:px-6 ">
+          {success && (
+            <div className="flex w-full justify-end  ">
+              <h5 className="bg-green-800   dark:text-white w-fit py-3  px-40 mb-4 rounded-lg   text-black  ">
+                {success}
+              </h5>
+            </div>
+          )}
           <div className="overflow-auto w-full bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 p-5">
             <TableTasks
               tasks={tasks}

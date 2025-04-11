@@ -7,6 +7,8 @@ use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class TaskController extends Controller
@@ -44,7 +46,8 @@ class TaskController extends Controller
             ->paginate(25)->onEachSide(1);
         return Inertia::render('Tasks/Index', [
             'tasks' => TaskResource::collection($tasks),
-            'queryParams' => request()->query() ?: null
+            'queryParams' => request()->query() ?: null,
+            'success' => session("success")
         ]);
     }
 
@@ -53,7 +56,12 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        $projects = Project::query()->orderBy("id", "desc")->get();
+        $users = User::query()->orderBy("id", "desc")->get();
+        return Inertia::render('Tasks/Create', [
+            "projects" => $projects,
+            "users" => $users,
+        ]);
     }
 
     /**
@@ -61,7 +69,12 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data["created_by"] = Auth::id();
+        $data["updated_by"] = Auth::id();
+        $name = $request->validated("name");
+        Task::create($data);
+        return to_route("task.index")->with("success", "Tâche: \"$name\" créée avec succès");
     }
 
     /**

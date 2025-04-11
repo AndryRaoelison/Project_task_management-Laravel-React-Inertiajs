@@ -44,7 +44,7 @@ const Index = ({ users, queryParams = null, success = null }) => {
   const deleteUser = (user) => {
     if (
       !window.confirm(
-        "Souhaitez-vous effacer l'utilsateur : " + '"' + user.name + '"'
+        "Voulez-vous vraiment effacer l'utilisateur  \"" + user.name + '"'
       )
     ) {
       return;
