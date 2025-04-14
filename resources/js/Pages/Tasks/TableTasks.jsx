@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 import Pagination from "@/Components/Pagination";
 import TableHeading from "@/Components/TableHeading";
@@ -14,6 +14,15 @@ const TableTasks = ({
   keypress,
   showProject = false,
 }) => {
+  const deleteTask = (task) => {
+    if (
+      !window.confirm(`Voulez-vous vraiment effacer la tâche : ${task.name}`)
+    ) {
+      return;
+    } else {
+      router.delete(route("task.destroy", task));
+    }
+  };
   return (
     <>
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
@@ -72,7 +81,9 @@ const TableTasks = ({
               <th className="px-3 py-2 w-xs ">
                 <TextInput
                   defaultValue={
-                    queryParams ? queryParams.ProjectNameInTask : ""
+                    queryParams.ProjectNameInTask
+                      ? queryParams.ProjectNameInTask
+                      : ""
                   }
                   className="w-90%"
                   placeholder="Projets..."
@@ -85,10 +96,12 @@ const TableTasks = ({
             )}
             <th className="px-3 py-2">
               <TextInput
-                defaultValue={queryParams ? queryParams.TaskNameInTask : ""}
+                defaultValue={
+                  queryParams.TaskNameInTask ? queryParams.TaskNameInTask : ""
+                }
                 className="w-[75%]"
                 placeholder="Taches..."
-                onBlur={(e) => searchfield("TaskNameInTask", e.target.value)}
+                onChange={(e) => searchfield("TaskNameInTask", e.target.value)}
                 onKeyPress={(e) => keypress("TaskNameInTask", e)}
               />
             </th>
@@ -103,7 +116,7 @@ const TableTasks = ({
               )}
               <SelectInput
                 queryparams={queryParams}
-                defaultValue={queryParams ? queryParams.status : ""}
+                defaultValue={queryParams.status ? queryParams.status : ""}
                 className={"w-fit"}
                 onChange={(e) => searchfield("status", e.target.value)}
               >
@@ -153,8 +166,12 @@ const TableTasks = ({
                   </span>
                 </td>
                 <td className="px-3 py-2 ">{task.created_by.name}</td>
-                <td className="px-3 py-2">{task.start_date}</td>
-                <td className="px-3 py-2">{task.due_date}</td>
+                <td className="px-3 py-2">
+                  {new Date(task.start_date).toLocaleDateString("fr-Fr")}
+                </td>
+                <td className="px-3 py-2">
+                  {new Date(task.due_date).toLocaleDateString("fr-Fr")}
+                </td>
                 <td className="  w-fit px-3 text-center">
                   <div className="flex gap-2 items-center justify-center">
                     <Link
@@ -166,12 +183,12 @@ const TableTasks = ({
                     <span className="text-gray-700 font-semibold text-mg">
                       |
                     </span>
-                    <Link
+                    <button
+                      onClick={() => deleteTask(task)}
                       className="text-red-600 hover:text-red-300 mx-1 "
-                      href={route("task.destroy", task.id)}
                     >
                       Supprimer
-                    </Link>
+                    </button>
                   </div>
                 </td>
               </tr>

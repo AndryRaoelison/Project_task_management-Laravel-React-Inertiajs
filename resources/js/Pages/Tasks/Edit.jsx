@@ -7,26 +7,29 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 import React from "react";
 
-const Edit = ({ project }) => {
+const Edit = ({ task, users, projects }) => {
   const { data, setData, post, errors } = useForm({
-    name: project.name || "",
-    status: project.status || "",
-    description: project.description || "",
-    due_date: project.due_date || "",
-    start_date: project.start_date || "",
+    name: task.name || "",
+    status: task.status || "",
+    description: task.description || "",
+    due_date: task.due_date || "",
+    start_date: task.start_date || "",
+    priority: task.priority || "",
+    assigned_user_id: task.assigned_user_id.id || "",
+    project_id: task.project.id || "",
     _method: "PUT",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    post(route("project.update", project));
+    post(route("task.update", task));
   };
   return (
     <AuthenticatedLayout
       header={
         <div>
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            Creer un projet
+            Modifier une tâche
           </h2>
         </div>
       }
@@ -39,12 +42,12 @@ const Edit = ({ project }) => {
             <form className="" onSubmit={onSubmit}>
               <div className="flex justify-between">
                 <div className="block  w-[50%]  ">
-                  <InputLabel htmlFor="project_name" value="Nom du projet" />
+                  <InputLabel htmlFor="task_name" value="Tâche" />
                   <TextInput
-                    name="project_name"
-                    id="project_name"
+                    name="task_name"
+                    id="task_name"
                     value={data.name}
-                    placeholder="Projet :  Réhabilitation de la voie Paris-Melun"
+                    placeholder="Tâche :  Collecte des retours clients sur le projet"
                     className="block w-full"
                     isFocused={true}
                     onChange={(e) => setData("name", e.target.value)}
@@ -53,7 +56,7 @@ const Edit = ({ project }) => {
                 </div>
                 <div className="mt-5 text-right">
                   <Link
-                    href={route("project.index")}
+                    href={route("task.index")}
                     className=" text-gray-900 py-2 px-5 inline-block h-10 bg-red-700 hover:bg-red-600 transition-all rounded-md dark:text-gray-100"
                   >
                     Annuler
@@ -79,48 +82,111 @@ const Edit = ({ project }) => {
                       id="start_date"
                       value={data.start_date}
                       className="block w-full text-gray-800 rounded-md px-3 py-2 
-                    [&::-webkit-calendar-picker-indicator]:invert"
+                        [&::-webkit-calendar-picker-indicator]:invert"
                       onChange={(e) => setData("start_date", e.target.value)}
                     />
-                    <InputError message={errors.due_date} />
+                    <InputError message={errors.start_date} />
                   </div>
-                  <div>
+                  <div className="my-3">
                     <InputLabel htmlFor="due_date" value="Deadline" />
                     <TextInput
                       type="date"
                       name="due_date"
                       id="due_date"
                       value={data.due_date}
-                      className="block w-full text-gray-800 rounded-md px-3 py-2 
-                    [&::-webkit-calendar-picker-indicator]:invert"
+                      className="block w-full text-gray-800 rounded-md px-3 py-2
+                        [&::-webkit-calendar-picker-indicator]:invert"
                       onChange={(e) => setData("due_date", e.target.value)}
                     />
                     <InputError message={errors.due_date} />
                   </div>
                 </div>
-                <div className="mt-5 w-[45%]">
-                  <SelectInput
-                    className="w-full"
-                    value={data.status}
-                    onChange={(e) => setData("status", e.target.value)}
-                  >
-                    <option value="pending">En attente</option>
-                    <option value="in_progress">En cours</option>
-                    <option value="finished">Terminé</option>
-                  </SelectInput>
-                  <InputError message={data.errors} />
+                <div className=" w-[45%]">
+                  <div>
+                    <InputLabel htmlFor="status" value="Status" />
+                    <SelectInput
+                      className="w-full py-2 rounded-md  "
+                      value={data.status}
+                      onChange={(e) => setData("status", e.target.value)}
+                      name="status"
+                    >
+                      <option value="pending">En attente</option>
+                      <option value="in_progress">En cours</option>
+                      <option value="finished">Terminé</option>
+                    </SelectInput>
+                    <InputError message={errors.status} />
+                  </div>
+                  <div className="my-4">
+                    <InputLabel htmlFor="priority" value="Priorité" />
+                    <SelectInput
+                      className="w-full py-2 rounded-md  "
+                      value={data.priority}
+                      onChange={(e) => setData("priority", e.target.value)}
+                      name="priority"
+                    >
+                      <option value="low">Basse</option>
+                      <option value="medium">Moyenne</option>
+                      <option value="high">Elevée</option>
+                    </SelectInput>
+                    <InputError message={errors.priority} />
+                  </div>
                 </div>
               </div>
-              <div className="mt-5">
-                <InputLabel htmlFor="description" value="Description" />
-                <TextAreaInput
-                  name="description"
-                  id="description"
-                  value={data.description}
-                  className="block w-full  h-[200px]"
-                  onChange={(e) => setData("description", e.target.value)}
-                ></TextAreaInput>
-                <InputError message={errors.description} />
+              <div className="flex w-full   justify-between items-center">
+                <div className="w-[50%]  ">
+                  <InputLabel htmlFor="project_id" value="Projet" />
+                  <SelectInput
+                    className="w-full py-2 rounded-md  "
+                    value={data.project_id}
+                    onChange={(e) => setData("project_id", e.target.value)}
+                    name="project_id"
+                  >
+                    <option value="low">Projet</option>
+                    {projects.map((project) => (
+                      <option
+                        value={project.id}
+                        key={project.id}
+                      >{`${project.id}-${project.name}`}</option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={errors.project_id} />
+                </div>
+                <div className="w-[45%]">
+                  <InputLabel
+                    htmlFor="assigned_user_id"
+                    value="Tâches assigné à :"
+                  />
+                  <SelectInput
+                    className="w-full py-2 rounded-md  "
+                    value={data.assigned_user_id}
+                    onChange={(e) =>
+                      setData("assigned_user_id", e.target.value)
+                    }
+                    name="assigned_user_id"
+                  >
+                    <option value="pending">Utilisateurs</option>
+                    {users.map((user) => (
+                      <option
+                        value={user.id}
+                        key={user.id}
+                      >{`${user.name} (Mle : ${user.id})`}</option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={errors.assigned_user_id} />
+                </div>
+              </div>
+              <div>
+                <div className="mt-5">
+                  <InputLabel htmlFor="description" value="Description" />
+                  <TextAreaInput
+                    name="description"
+                    id="description"
+                    value={data.description}
+                    className="block w-full  h-[200px]"
+                    onChange={(e) => setData("description", e.target.value)}
+                  ></TextAreaInput>
+                  <InputError message={errors.description} />
+                </div>
               </div>
             </form>
           </div>

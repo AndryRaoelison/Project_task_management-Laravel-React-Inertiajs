@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProjectResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserCrudResource;
 use App\Models\Project;
 use App\Models\Task;
 use App\Http\Requests\StoreTaskRequest;
@@ -59,8 +61,8 @@ class TaskController extends Controller
         $projects = Project::query()->orderBy("id", "desc")->get();
         $users = User::query()->orderBy("id", "desc")->get();
         return Inertia::render('Tasks/Create', [
-            "projects" => $projects,
-            "users" => $users,
+            "projects" => ProjectResource::collection($projects)->resolve(),
+            "users" => UserCrudResource::collection($users)->resolve(),
         ]);
     }
 
@@ -81,8 +83,7 @@ class TaskController extends Controller
      * Display the specified resource.
      */
     public function show(Task $task)
-    {
-        //
+    {//
     }
 
     /**
@@ -90,7 +91,13 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $users = User::query()->orderBy("id", "desc")->get();
+        $projects = Project::query()->orderBy("id", "desc")->get();
+        return Inertia::render("Tasks/Edit", [
+            "task" => new TaskResource($task),
+            "users" => UserCrudResource::collection($users)->resolve(),
+            "projects" => ProjectResource::collection($projects)->resolve()
+        ]);
     }
 
     /**
@@ -98,7 +105,12 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        $data = $request->validated();
+        $name = $data['name'];
+        $data['updated_by'] = Auth::id();
+        unset($data['created_by']);
+        $task->update($data);
+        return to_route("task.index")->with("success", "La tâche : \"$name\" a été modifiée avec succès");
     }
 
     /**
@@ -106,6 +118,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        $name = $task->name;
+        $task->delete();
+        return to_route("task.index")->with("success", "La tâche : \"$name\" a été supprimée avec succès");
     }
 }

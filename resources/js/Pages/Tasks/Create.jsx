@@ -133,7 +133,25 @@ const Create = ({ projects, users }) => {
                 </div>
               </div>
               <div className="flex w-full   justify-between items-center">
-                <div className="w-[50%]">
+                <div className="w-[50%]  ">
+                  <InputLabel htmlFor="project_id" value="Projet" />
+                  <SelectInput
+                    className="w-full py-2 rounded-md  "
+                    value={data.project_id}
+                    onChange={(e) => setData("project_id", e.target.value)}
+                    name="project_id"
+                  >
+                    <option value="low">Projet</option>
+                    {projects.map((project) => (
+                      <option
+                        value={project.id}
+                        key={project.id}
+                      >{`${project.id}-${project.name}`}</option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={errors.project_id} />
+                </div>
+                <div className="w-[45%]">
                   <InputLabel
                     htmlFor="assigned_user_id"
                     value="Tâches assigné à :"
@@ -155,24 +173,6 @@ const Create = ({ projects, users }) => {
                     ))}
                   </SelectInput>
                   <InputError message={errors.assigned_user_id} />
-                </div>
-                <div className="w-[45%]  ">
-                  <InputLabel htmlFor="project_id" value="Projet" />
-                  <SelectInput
-                    className="w-full py-2 rounded-md  "
-                    value={data.project_id}
-                    onChange={(e) => setData("project_id", e.target.value)}
-                    name="project_id"
-                  >
-                    <option value="low">Projet</option>
-                    {projects.map((project) => (
-                      <option
-                        value={project.id}
-                        key={project.id}
-                      >{`${project.id}-${project.name}`}</option>
-                    ))}
-                  </SelectInput>
-                  <InputError message={errors.project_id} />
                 </div>
               </div>
               <div>

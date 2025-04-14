@@ -13,6 +13,7 @@ class TaskResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    public static $wrap = false;
     public function toArray(Request $request): array
     {
         return [
@@ -21,8 +22,8 @@ class TaskResource extends JsonResource
             "description" => $this->description,
             "status" => $this->status,
             "priority" => $this->priority,
-            "due_date" => (new Carbon($this->due_date))->format("d-m-Y"),
-            "start_date" => (new Carbon($this->start_date))->format("d-m-Y"),
+            "due_date" => (new Carbon($this->due_date))->format("Y-m-d"),
+            "start_date" => (new Carbon($this->start_date))->format("Y-m-d"),
             "created_by" => (new UserResource($this->taskCreatedBy)),
             "updated_by" => new UserResource($this->taskUpdatedBy),
             "assigned_user_id" => new UserResource($this->taskAssignedUser),

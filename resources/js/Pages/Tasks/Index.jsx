@@ -22,7 +22,15 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
       replace: true,
     });
   };
-
+  const deleteTask = (task) => {
+    if (
+      !window.confirm(`Voulez-vous vraiment effacer la tâche : ${$task.name}`)
+    ) {
+      return;
+    } else {
+      router.destroy(route("task.delete", task));
+    }
+  };
   const keypress = (name, e) => {
     if (e.key !== "Enter") return;
     searchfield(name, e.target.value);

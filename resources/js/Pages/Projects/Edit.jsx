@@ -99,10 +99,12 @@ const Edit = ({ project }) => {
                   </div>
                 </div>
                 <div className="mt-5 w-[45%]">
+                  <InputLabel htmlFor="status" value="Status" />
                   <SelectInput
                     className="w-full"
                     value={data.status}
                     onChange={(e) => setData("status", e.target.value)}
+                    name="status"
                   >
                     <option value="pending">En attente</option>
                     <option value="in_progress">En cours</option>
