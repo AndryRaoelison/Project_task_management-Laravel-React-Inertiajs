@@ -1,6 +1,6 @@
  Project Task Management - Laravel + React + Inertia.js
 
-""""""""""""""""""""French"""""""""""""""""""""""""""""""""""
+## """"""""""""""""""""French"""""""""""""""""""""""""""""""""""
 
 Ce projet est une application web de **gestion de tâches** conçue pour accompagner les **chefs de projet** dans le suivi et la gestion des tâches liées à leurs projets.
 Il a pour objet de mettre en application les connaissances apprises en php-Laravel, reactjs avec inertiajs 
@@ -18,7 +18,8 @@ Il a pour objet de mettre en application les connaissances apprises en php-Larav
 ## Fonctionnalités principales
 
 -  Authentification (login)
--  Dashboard : Vue d'ensemble des tâches "à faire" et "en cours" par projet
+-  Dashboard : Vue d'ensemble des tâches "à faire" et "en cours" par projet :
+![Dashboard](https://github.com/user-attachments/assets/f480b1cd-db21-458c-a706-4f42d7b124fa)
 -  CRUD complet sur les projets et les tâches
 -  Recherche dynamique et tri des projets/tâches
 -  Attribution des tâches à des utilisateurs spécifiques
@@ -29,6 +30,6 @@ Dans le cas où vous souhaitez accéder à l'application, ci-dessosu des identif
 - **Email** : john@doe.com
 - **Mot de passe** : 0000
 
-nb : Ne pas oublier de lancer les commandes nécessaire pour l'installation notamment : php artisan migrate --seed 
+Nb : Ne pas oublier de lancer les commandes nécessaire pour l'installation notamment : php artisan migrate --seed 
 ---
 
