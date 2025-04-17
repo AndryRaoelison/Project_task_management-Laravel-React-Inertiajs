@@ -14,9 +14,7 @@ export default forwardRef(function SelectInput(
     <select
       {...props}
       className={
-        " mx-0  py-1" +
-        (props.queryparams?.status ? " " : "!text-red-400 ") +
-        "border-gray-300 h-10 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-900 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 " +
+        " mx-0  py-1 rounded-sm border-gray-300 h-10 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-900 dark:bg-gray-900 dark:text-gray-200 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 " +
         className
       }
       ref={localRef}

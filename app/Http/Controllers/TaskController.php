@@ -26,6 +26,9 @@ class TaskController extends Controller
             "project",
             "taskAssignedUser"
         ]);
+        if (request('task_id')) {
+            $query->where('id', '=', request('task_id'));
+        }
         if (request('status')) {
             $query->where('status', 'like', "%" . request('status') . "%");
         }
@@ -121,5 +124,43 @@ class TaskController extends Controller
         $name = $task->name;
         $task->delete();
         return to_route("task.index")->with("success", "La tâche : \"$name\" a été supprimée avec succès");
+    }
+
+    /**
+     * Show the specified resource based on the user logged in.
+     */
+    public function taskAssignedToUser()
+    {
+        $user = auth()->user();
+        $query = Task::query()->where("assigned_user_id", "like", $user->id)->with('project');
+        if (request('task_id')) {
+            $query->where('id', '=', request('task_id'));
+        }
+        if (request('status')) {
+            $query->where('status', 'like', "%" . request('status') . "%");
+        }
+        if (request("name")) {
+            $query->where("name", "like", "%" . request("name") . "%");
+        }
+        if (request('TaskNameInTask')) {
+            $query->where('name', 'like', "%" . request('TaskNameInTask') . "%");
+        }
+        if (request('created_by')) {
+            $query->whereHas("taskCreatedBy", function ($q) {
+                $q->where("created_by", 'like', "%" . request('created_by') . "%");
+            });
+        }
+        if (request("ProjectNameInTask")) {
+            $query->whereHas('project', function ($q) {
+                $q->where('name', 'like', '%' . request('ProjectNameInTask') . '%');
+            });
+        }
+        $sort_field = request('sort_field', 'created_at');
+        $sort_direction = request('sort_direction', 'desc');
+        $tasks = $query->orderBy($sort_field, $sort_direction)->paginate(10);
+        return Inertia::render("Tasks/MyTasks", [
+            "tasks" => TaskResource::collection($tasks),
+            "queryParams" => request()->query() ?? null
+        ]);
     }
 }

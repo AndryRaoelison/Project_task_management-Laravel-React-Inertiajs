@@ -101,7 +101,6 @@ const Index = ({ users, queryParams = null, success = null }) => {
                     Nom
                   </TableHeading>
                   <TableHeading>Email</TableHeading>
-                  <TableHeading className="px-3 py-2"></TableHeading>
                   <TableHeading
                     sortChanged={sortChanged}
                     sort_direction={queryParams?.sort_direction}
@@ -109,8 +108,7 @@ const Index = ({ users, queryParams = null, success = null }) => {
                     name={"created_at"}
                     className={"pt-2"}
                   >
-                    Date d' <br />
-                    inscription
+                    Date d' inscription
                   </TableHeading>
                   <TableHeading className="text-center  pt-4 flex justify-center">
                     Actions
@@ -139,7 +137,6 @@ const Index = ({ users, queryParams = null, success = null }) => {
                   </th>
                   <th className="px-3 py-2   "></th>
                   <th className="px-3 py-2"></th>
-                  <th className="px-3 py-2"></th>
                 </tr>
               </thead>
               <tbody className="text-sm text-nowrap">
@@ -156,7 +153,6 @@ const Index = ({ users, queryParams = null, success = null }) => {
                         </Link>
                       </td>
                       <td className="px-3 py-4 ">{user.email}</td>
-                      <td className="px-3 py-2 "></td>
                       <td className="px-3 py-2">
                         {new Date(user.created_at).toLocaleDateString("fr-FR")}
                       </td>
@@ -168,6 +164,9 @@ const Index = ({ users, queryParams = null, success = null }) => {
                           >
                             Editer
                           </Link>
+                          <span className="text-gray-700 font-semibold text-mg">
+                            |
+                          </span>
                           <button
                             className="text-red-600 hover:text-red-300 mx-1"
                             onClick={() => deleteUser(user)}

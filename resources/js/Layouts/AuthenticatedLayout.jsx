@@ -48,6 +48,12 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                   Utilisateurs
                 </NavLink>
+                <NavLink
+                  href={route("task.myTasks")}
+                  active={route().current("task.myTasks")}
+                >
+                  Mes tâches
+                </NavLink>
               </div>
             </div>
 

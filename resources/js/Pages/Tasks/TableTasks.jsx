@@ -6,6 +6,7 @@ import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constants";
 import TextInput from "@/Components/TextInput";
 import SelectInput from "@/Components/SelectInput";
 
+//Componnents of a table used mostly for showing tasks
 const TableTasks = ({
   tasks,
   queryParams,
@@ -13,7 +14,9 @@ const TableTasks = ({
   searchfield,
   keypress,
   showProject = false,
+  buttonDeleteShow = false,
 }) => {
+  // Handling the button delete (for deleting a project) :
   const deleteTask = (task) => {
     if (
       !window.confirm(`Voulez-vous vraiment effacer la tâche : ${task.name}`)
@@ -37,7 +40,7 @@ const TableTasks = ({
               name={"id"}
               filterbool={true}
             >
-              ID
+              ID-Tâche
             </TableHeading>
             {showProject && (
               <TableHeading className={"w-[50%]  text-wrap "}>
@@ -54,12 +57,13 @@ const TableTasks = ({
               Taches
             </TableHeading>
             <TableHeading>Status</TableHeading>
-            <TableHeading className="px-3 py-2">Creer par</TableHeading>
+            <TableHeading className="px-3 py-2 w-5">Creer par</TableHeading>
             <TableHeading
               sortChanged={sortChanged}
               sort_direction={queryParams?.sort_direction}
               filterbool={true}
               name={"start_date"}
+              className="py-2"
             >
               Date de <br />
               lancement
@@ -76,14 +80,20 @@ const TableTasks = ({
           </tr>
           {/* Filtering and searching section */}
           <tr className="text-nowrap ">
-            <th className="px-3 py-2"></th>
+            <th className="px-3 py-2 w-[15%]">
+              <TextInput
+                defaultValue={queryParams ? queryParams.task_id : null}
+                className="w-[75%]"
+                placeholder="N°"
+                onBlur={(e) => searchfield("task_id", e.target.value)}
+                onKeyPress={(e) => keypress("task_id", e)}
+              />
+            </th>
             {showProject && (
               <th className="px-3 py-2 w-xs ">
                 <TextInput
                   defaultValue={
-                    queryParams.ProjectNameInTask
-                      ? queryParams.ProjectNameInTask
-                      : ""
+                    queryParams ? queryParams.ProjectNameInTask : ""
                   }
                   className="w-90%"
                   placeholder="Projets..."
@@ -96,27 +106,26 @@ const TableTasks = ({
             )}
             <th className="px-3 py-2">
               <TextInput
-                defaultValue={
-                  queryParams.TaskNameInTask ? queryParams.TaskNameInTask : ""
-                }
+                defaultValue={queryParams ? queryParams.TaskNameInTask : ""}
                 className="w-[75%]"
                 placeholder="Taches..."
-                onChange={(e) => searchfield("TaskNameInTask", e.target.value)}
+                onBlur={(e) => searchfield("TaskNameInTask", e.target.value)}
                 onKeyPress={(e) => keypress("TaskNameInTask", e)}
               />
             </th>
-            <th className="px-3 py-2 gap-0 overflow-visible">
+            <th className="px-3 py-2 flex">
               {queryParams?.status && (
                 <button
                   onClick={() => searchfield("status", null)}
-                  className="text-lg p-1.5 bg-gray-900 "
+                  className="bg-gray-900 px-2 border-4 mx-0 border-gray-900 z-10
+                        rounded-tl-sm rounded-bl-sm text-lg"
                 >
                   x
                 </button>
               )}
               <SelectInput
                 queryparams={queryParams}
-                defaultValue={queryParams.status ? queryParams.status : ""}
+                defaultValue={queryParams ? queryParams.status : ""}
                 className={"w-fit"}
                 onChange={(e) => searchfield("status", e.target.value)}
               >
@@ -133,7 +142,7 @@ const TableTasks = ({
             <th className="px-3 py-2">
               <TextInput
                 defaultValue={queryParams ? queryParams.created_by : ""}
-                className="w-[90%]"
+                className=" w-[150px]"
                 placeholder="Chef de projet..."
                 onBlur={(e) => searchfield("created_by", e.target.value)}
                 onKeyPress={(e) => keypress("created_by", e)}
@@ -148,7 +157,7 @@ const TableTasks = ({
           {tasks.data.map((task) => {
             return (
               <tr key={task.id} className="border-b-2 border-gray-500 px-20  ">
-                <td className="px-3 py-2">{task.id}</td>
+                <td className="pl-10 py-2 ">{task.id}</td>
                 {showProject && (
                   <td className="w- text-wrap px-3 py-2 ">
                     {task.project.name}
@@ -180,15 +189,20 @@ const TableTasks = ({
                     >
                       Editer
                     </Link>
-                    <span className="text-gray-700 font-semibold text-mg">
-                      |
-                    </span>
-                    <button
-                      onClick={() => deleteTask(task)}
-                      className="text-red-600 hover:text-red-300 mx-1 "
-                    >
-                      Supprimer
-                    </button>
+
+                    {!buttonDeleteShow && (
+                      <>
+                        <span className="text-gray-700 font-semibold text-mg">
+                          |
+                        </span>
+                        <button
+                          onClick={() => deleteTask(task)}
+                          className="text-red-600 hover:text-red-300 mx-1 "
+                        >
+                          Supprimer
+                        </button>
+                      </>
+                    )}
                   </div>
                 </td>
               </tr>

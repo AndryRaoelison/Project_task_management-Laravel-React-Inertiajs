@@ -20,10 +20,8 @@ class ProjectController extends Controller
         $query = Project::query()->with(['createdBy', 'updatedBy']);
         $sort_field = request('sort_field', 'start_date');
         $sort_direction = request('sort_direction', 'desc');
-        if (request('created_by')) {
-            $query->whereHas('createdBy', function ($q) {
-                $q->where('name', 'like', '%' . request('created_by') . '%');
-            });
+        if (request('task_id')) {
+            $query->where('id', '=', request('task_id'));
         }
         if (request("name")) {
             $query->where("name", "like", "%" . request("name") . "%");
@@ -31,7 +29,11 @@ class ProjectController extends Controller
         if (request("status")) {
             $query->where("status", request('status'));
         }
-
+        if (request('created_by')) {
+            $query->whereHas('createdBy', function ($q) {
+                $q->where('name', 'like', '%' . request('created_by') . '%');
+            });
+        }
         $projects = $query->orderBy($sort_field, $sort_direction)->paginate(20)->onEachSide(1);
 
         return inertia('Projects/Index', [

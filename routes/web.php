@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardContoller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
@@ -10,11 +11,13 @@ use Inertia\Inertia;
 
 Route::redirect('/', '/dashboard');
 
-// ----Project management ----
+// ----Project/task/user management ----
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', fn() => Inertia::render('Dashboard'))
+    Route::get('/dashboard', [DashboardContoller::class, 'index'])
         ->name('dashboard');
     Route::resource('project', ProjectController::class);
+    Route::get('/my-tasks', [TaskController::class, "taskAssignedToUser"])
+        ->name("task.myTasks");
     Route::resource('task', TaskController::class);
     Route::resource('user', UserController::class)->except('show');
 });
