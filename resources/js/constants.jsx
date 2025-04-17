@@ -1,3 +1,8 @@
+import pendingIcon from "./assets/icons/pending.svg";
+import in_progressIcon from "./assets/icons/in_progress.svg";
+
+export { pendingIcon, in_progressIcon };
+
 export const PROJECT_STATUS_CLASS_MAP = {
   pending: "bg-orange-500",
   in_progress: "bg-blue-500 ",

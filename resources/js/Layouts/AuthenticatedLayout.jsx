@@ -42,6 +42,18 @@ export default function AuthenticatedLayout({ header, children }) {
                 >
                   Tâches
                 </NavLink>
+                <NavLink
+                  href={route("user.index")}
+                  active={route().current("user.index")}
+                >
+                  Utilisateurs
+                </NavLink>
+                <NavLink
+                  href={route("task.myTasks")}
+                  active={route().current("task.myTasks")}
+                >
+                  Mes tâches
+                </NavLink>
               </div>
             </div>
 
@@ -74,14 +86,14 @@ export default function AuthenticatedLayout({ header, children }) {
 
                   <Dropdown.Content>
                     <Dropdown.Link href={route("profile.edit")}>
-                      Profile
+                      Profil
                     </Dropdown.Link>
                     <Dropdown.Link
                       href={route("logout")}
                       method="post"
                       as="button"
                     >
-                      Log Out
+                      Se deconnecter
                     </Dropdown.Link>
                   </Dropdown.Content>
                 </Dropdown>

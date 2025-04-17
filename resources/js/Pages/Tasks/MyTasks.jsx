@@ -4,8 +4,8 @@ import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TableTasks from "./TableTasks";
 
-const Index = ({ tasks, queryParams = null, success = null }) => {
-  // Functions for setting queryparams (selecting a status and searching a task name)
+const MyTasks = ({ tasks, queryParams = null, success = null }) => {
+  // Function for selecting a status and searching a task name
   const searchfield = (name, value) => {
     const newQueryParams = { ...(queryParams || {}) };
     if (value) {
@@ -17,7 +17,7 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
       "Apres appel de la fonction QueryParams + index = " +
         JSON.stringify(queryParams)
     );
-    router.get(route("task.index", newQueryParams), {
+    router.get(route("task.myTasks", newQueryParams), {
       preserveState: true,
       replace: true,
     });
@@ -38,7 +38,7 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
       newQueryParams.sort_direction = "asc";
     }
 
-    router.get(route("task.index", newQueryParams), {
+    router.get(route("task.myTasks", newQueryParams), {
       replace: true,
       preserveState: true,
     });
@@ -48,18 +48,12 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
       header={
         <div className="flex justify-between">
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            Tâches
+            Mes Tâches
           </h2>
-          <Link
-            className=" text-gray-900 py-2 px-3  bg-indigo-700 hover:bg-indigo-600 transition-all rounded-md dark:text-gray-100"
-            href={route("task.create")}
-          >
-            Créer une nouvelle tâche
-          </Link>
         </div>
       }
     >
-      <Head title="Tasks" />
+      <Head title="My Tasks" />
 
       <div className="py-12 w-full ">
         <div className="mx-auto max-w-[1700px] sm:px-6 ">
@@ -79,6 +73,7 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
               keypress={keypress}
               showProject={true}
               deleteTask={() => deleteTask()}
+              buttonDeleteShow={true}
             />
           </div>
         </div>
@@ -86,7 +81,7 @@ const Index = ({ tasks, queryParams = null, success = null }) => {
     </AuthenticatedLayout>
   );
 };
-export default Index;
+export default MyTasks;
 
 // {/* <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
 //               <thead
