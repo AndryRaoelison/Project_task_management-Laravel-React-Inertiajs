@@ -64,6 +64,7 @@ Its purpose is to put into practice the knowledge acquired in PHP-Laravel and Re
 If you’d like to try the app, here are the default login credentials:
 - **Email**: john@doe.com
 - **Password** : 0000
+  
 Nb: Don’t forget to run the required installation commands, especially: php artisan migrate --seed
 ---
 
