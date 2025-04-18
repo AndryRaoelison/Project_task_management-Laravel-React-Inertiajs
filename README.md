@@ -34,7 +34,7 @@ Dans le cas où vous souhaitez accéder à l'application, ci-dessosu des identif
 - **Email** : john@doe.com
 - **Mot de passe** : 0000
 
-Nb : Ne pas oublier de lancer les commandes nécessaire pour l'installation notamment : php artisan migrate --seed 
+Nb: Ne pas oublier de lancer les commandes nécessaire pour l'installation notamment : php artisan migrate --seed 
 ---
 
 ## """"""""""""""""""""en-En"""""""""""""""""""""""""""""""""""
