@@ -62,7 +62,7 @@ Il a pour objet de mettre en application les connaissances apprises en php-Larav
 -  Suppression de projeet et de tâche : 
 ![Deleting-proecjt-image](https://github.com/user-attachments/assets/2c9720ec-941e-4d5c-ac05-5fcff5e0bb26)
 ---
-Dans le cas où vous souhaitez accéder à l'application, ci-dessosu des identifiants de connexion par défaut :
+Dans le cas où vous souhaitez accéder à l'application, ci-dessous des identifiants de connexion par défaut :
 - **Email** : john@doe.com
 - **Mot de passe** : 0000
 
